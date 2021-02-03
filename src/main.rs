@@ -99,6 +99,9 @@ fn process_guess(word_to_guess: &str,
                  wrong_tries: &mut u32) -> bool {
 
     let input_letter: char = user_guess.chars().next().unwrap_or('0');
+    if input_letter == '\n' {
+        return false;
+    }
     if used_letters.iter().any(|&i| i==input_letter) {
         println!("Letter {} was already used", input_letter);
         return false;
