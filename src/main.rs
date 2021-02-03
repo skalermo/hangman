@@ -54,13 +54,13 @@ static HANGMAN_PICS: [&str; 7] = ["
         |
     ========="];
 
-fn print_hangman(wrong_tries: u32) {
-    println!("{}", HANGMAN_PICS[wrong_tries as usize])
+fn print_hangman(wrong_tries: usize) {
+    println!("{}", HANGMAN_PICS[wrong_tries])
 }
 
 fn print_stats(points: u32, wrong_tries: u32) {
     println!("Your points: {}", points);
-    println!("You entered wrong {}/{}", wrong_tries, HANGMAN_PICS.len());
+    println!("You entered wrong {}/{}", wrong_tries, HANGMAN_PICS.len()-1);
 }
 
 fn print_partial_word(word_to_guess: &str, mask: &Vec<bool>) {
@@ -117,7 +117,7 @@ fn process_guess(word_to_guess: &str,
     }
     else if matches == 0 {
         *wrong_tries += 1;
-        if *wrong_tries == HANGMAN_PICS.len() as u32 {
+        if *wrong_tries == HANGMAN_PICS.len() as u32 -1 {
             return true;
         }
     }
@@ -126,7 +126,8 @@ fn process_guess(word_to_guess: &str,
 
 fn finalize_results(matches: u32, wrong_tries: u32) {
     let mut score = matches;
-    if wrong_tries == HANGMAN_PICS.len() as u32 {
+    if wrong_tries == HANGMAN_PICS.len() as u32 -1 {
+        print_hangman(HANGMAN_PICS.len() - 1);
         println!("You lose!");
         println!("Your score: {}", score)
     } else {
@@ -149,7 +150,7 @@ fn main() {
 
     let mut running = true;
     while running {
-        print_hangman(wrong_tries);
+        print_hangman(wrong_tries as usize);
         print_partial_word(&word_to_guess, &mask);
         println!("Used letters: {:?}", &used_letters[..]);
         print_stats(matches, wrong_tries);
